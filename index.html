@@ -1,92 +1,101 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <center>
-        <style> 
-        body {
-            background-color: rgb(164, 135, 241);
 
-        }
+<head>
+  <center>
+    <style>
+      body {
+        background-color: rgb(164, 135, 241);
 
-        </style>
-    <script>
-        function getWeather() {
-  var city = document.getElementById("city-input").value;
-  var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=8ffe2740aa37259e39e855b706122009&units=metric";
-
-  fetch(apiUrl)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Weather data not found");
       }
-      return response.json();
-    })
-    .then(function (data) {
-      // Extract the required weather data from the response JSON
-      var weatherData = {
-        wmain: data.weather[0].main,
-        currenticon: data.weather[0].icon,
-        wdescription: data.weather[0].description,
-        temp: data.main.temp,
-        pressure: data.main.pressure,
-      };
 
-      // Pass the weatherData object to the renderWeather function
-      renderWeather(weatherData);
-    })
-    .catch(function (error) {
-        var weatherData = {
-        wmain: "",
-        currenticon: "",
-        wdescription: "",
-        temp: "",
-        pressure: "",
-      };
+      img {
+        width: 300px;
+      }
+    </style>
+    <script>
+      function getWeather() {
+        var city = document.getElementById("city-input").value;
+        var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=8ffe2740aa37259e39e855b706122009&units=metric";
 
-      // Pass the weatherData object to the renderWeather function
-      renderWeather(weatherData);
-      console.error(error);
-    });
-}
+        fetch(apiUrl)
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error("Weather data not found");
+            }
+            return response.json();
+          })
+          .then(function (data) {
+            // Extract the required weather data from the response JSON
+            var weatherData = {
+              wmain: data.weather[0].main,
+              currenticon: `https://openweathermap.org/img/w/${data.weather[0].icon}.png`,
+              wdescription: data.weather[0].description,
+              temp: data.main.temp,
+              pressure: data.main.pressure,
+            };
 
-function renderWeather(weatherData) {
-  // Access the HTML elements where you want to display the weather data
-  var weatherElement = document.getElementById("weather");
-  var codeElement = document.getElementById("code");
-  var cityElement = document.getElementById("city");
-  var currentIconElement = document.getElementById("current-icon");
-  var wDescriptionElement = document.getElementById("w-description");
-  var tempElement = document.getElementById("temp");
-  var pressureElement = document.getElementById("pressure");
+            // Pass the weatherData object to the renderWeather function
+            renderWeather(weatherData);
+          })
+          .catch(function (error) {
+            var weatherData = {
+              wmain: "",
+              currenticon: "not.PNG",
+              wdescription: "",
+              temp: "",
+              pressure: "",
+            };
 
-  // Update the HTML elements with the weather data
-  weatherElement.innerText = "Weather: " + weatherData.wmain;
-  codeElement.innerText = "Code: " + weatherData.currenticon;
-  cityElement.innerText = "City: " + document.getElementById("city-input").value;
-  currentIconElement.src = "https://openweathermap.org/img/w/" + weatherData.currenticon + ".png";
-  wDescriptionElement.innerText = "Description: " + weatherData.wdescription;
-  tempElement.innerText = "Temperature: " + weatherData.temp + " °C";
-  pressureElement.innerText = "Pressure: " + weatherData.pressure;
-}
+            // Pass the weatherData object to the renderWeather function
+            renderWeather(weatherData);
+            console.error(error);
+          });
+      }
+
+      function renderWeather(weatherData) {
+        // Access the HTML elements where you want to display the weather data
+        var weatherElement = document.getElementById("weather");
+        var codeElement = document.getElementById("code");
+        var cityElement = document.getElementById("city");
+        var currentIconElement = document.getElementById("current-icon");
+        var wDescriptionElement = document.getElementById("w-description");
+        var tempElement = document.getElementById("temp");
+        var pressureElement = document.getElementById("pressure");
+
+        // Update the HTML elements with the weather data
+        weatherElement.innerText = "Weather: " + weatherData.wmain;
+        codeElement.innerText = "";
+        cityElement.innerText = "City: " + document.getElementById("city-input").value;
+        currentIconElement.src = weatherData.currenticon;
+        wDescriptionElement.innerText = "Description: " + weatherData.wdescription;
+        tempElement.innerText = "Temperature: " + weatherData.temp + " °C";
+        pressureElement.innerText = "Pressure: " + weatherData.pressure;
+      }
 
     </script>
     <title>Weather App</title>
     <!-- Include the script file containing the JavaScript code -->
     <script src="path/to/your/javascript/file.js"></script>
-  </head>
-  <body>
-    <h1>Weather App</h1>
+</head>
 
-    <input type="text" id="city-input" placeholder="Enter city name" />
-    <button onclick="getWeather()">Get Weather</button>
+<body>
+  <h1>Weather App</h1>
 
-    <div id="weather"></div>
-    <div id="code"></div>
-    <div id="city"></div>
-    <img id="current-icon" src="" alt="Weather Icon" />
-    <div id="w-description"></div>
-    <div id="temp"></div>
-    <div id="pressure"></div>
-</center>
-  </body>
+  <input type="text" id="city-input" value="Varanasi" placeholder="Enter city name" />
+  <button onclick="getWeather()">Get Weather</button>
+
+  <div id="weather"></div>
+  <div id="code"></div>
+  <div id="city"></div>
+  <img id="current-icon" src="" alt="Weather Icon" />
+  <div id="w-description"></div>
+  <div id="temp"></div>
+  <div id="pressure"></div>
+  </center>
+  <script>
+    getWeather();
+  </script>
+</body>
+
 </html>
